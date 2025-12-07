@@ -37,8 +37,8 @@ env/
 data/raw/*
 !data/raw/.gitkeep
 
-# Model files (optional - remove if you want to version them)
-# *.pkl
+# Model files (large files, excluded from git)
+*.pkl
 # *.h5
 # *.pt
 

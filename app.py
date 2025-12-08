@@ -333,24 +333,29 @@ def letter_count(url):
     return sum(c.isalpha() for c in url)
 
 def extract_url_features(url):
-    """Extract all features from a URL"""
+    """Extract all features from a URL - EXACT ORDER FROM MODEL"""
     features = {}
     
-    # Basic lexical features
-    features['url_length'] = len(url)
+    # Match exact feature names from trained model
     hostname = urlparse(url).netloc
+    features['url_length'] = len(url)
     features['hostname_length'] = len(hostname)
     features['count_letters'] = letter_count(url)
     features['count_digits'] = digit_count(url)
-    
-    # Special characters
-    special_chars = ['@', '?', '-', '=', '.', '#', '%', '+', '$', '!', '*', ',', '//']
-    for ch in special_chars:
-        features[f"count_{ch.replace('//', 'slashes')}"] = url.count(ch)
-    
+    features['count_@'] = url.count('@')
+    features['count_?'] = url.count('?')
+    features['count_-'] = url.count('-')
+    features['count_='] = url.count('=')
+    features['count_.'] = url.count('.')
+    features['count_#'] = url.count('#')
+    features['count_%'] = url.count('%')
+    features['count_+'] = url.count('+')
+    features['count_$'] = url.count('$')
+    features['count_!'] = url.count('!')
+    features['count_*'] = url.count('*')
+    features['count_,'] = url.count(',')
+    features['count_slashes'] = url.count('//')
     features['count_www'] = url.count('www')
-    
-    # Domain-based features
     features['has_ip'] = having_ip_address(url)
     features['abnormal_url'] = abnormal_url(url)
     features['short_url'] = shortening_service(url)
@@ -595,9 +600,11 @@ def main():
             value=st.session_state.url_to_scan,
             placeholder="https://example.com or http://suspicious-site.com",
             help="Enter the complete URL including protocol (http:// or https://)",
-            label_visibility="collapsed",
-            key="url_input_field"
+            label_visibility="collapsed"
         )
+        
+        # Sync text input with session state
+        st.session_state.url_to_scan = url_input
         
         col_btn1, col_btn2, col_btn3 = st.columns([1, 1, 2])
         with col_btn1:
@@ -614,29 +621,124 @@ def main():
             </div>
         """, unsafe_allow_html=True)
         
-        example_urls = {
-            "🟢 Safe": "https://www.google.com",
-            "🟡 Suspicious": "http://bit.ly/suspicious123",
-            "🔴 Risky": "http://example-login-bank.com"
-        }
+        if st.button("🟢 Safe", use_container_width=True, key="safe_test"):
+            st.session_state.url_to_scan = "https://www.google.com"
+            st.rerun()
         
-        for label, url in example_urls.items():
-            if st.button(label, use_container_width=True, key=f"example_{label}"):
-                st.session_state.url_to_scan = url
-                st.rerun()
+        if st.button("🟡 Suspicious", use_container_width=True, key="suspicious_test"):
+            st.session_state.url_to_scan = "http://bit.ly/suspicious123"
+            st.rerun()
+        
+        if st.button("🔴 Risky", use_container_width=True, key="risky_test"):
+            st.session_state.url_to_scan = "http://example-login-bank.com"
+            st.rerun()
+    
+    # Use session state value for analysis
+    current_url = st.session_state.url_to_scan
     
     # Analysis
-    if analyze_button and url_input:
+    if analyze_button and current_url:
         with st.spinner("🔄 Analyzing URL..."):
             try:
+                # Extensive whitelist of known safe domains (model fallback)
+                safe_domains = [
+                    # Search Engines
+                    'google.com', 'www.google.com', 'bing.com', 'www.bing.com',
+                    'yahoo.com', 'www.yahoo.com', 'duckduckgo.com', 'www.duckduckgo.com',
+                    'baidu.com', 'www.baidu.com', 'yandex.com', 'www.yandex.com',
+                    
+                    # Social Media
+                    'facebook.com', 'www.facebook.com', 'twitter.com', 'www.twitter.com',
+                    'instagram.com', 'www.instagram.com', 'linkedin.com', 'www.linkedin.com',
+                    'reddit.com', 'www.reddit.com', 'pinterest.com', 'www.pinterest.com',
+                    'tiktok.com', 'www.tiktok.com', 'snapchat.com', 'www.snapchat.com',
+                    'whatsapp.com', 'www.whatsapp.com', 'telegram.org', 'www.telegram.org',
+                    
+                    # Tech Companies
+                    'microsoft.com', 'www.microsoft.com', 'apple.com', 'www.apple.com',
+                    'amazon.com', 'www.amazon.com', 'netflix.com', 'www.netflix.com',
+                    'adobe.com', 'www.adobe.com', 'oracle.com', 'www.oracle.com',
+                    'ibm.com', 'www.ibm.com', 'intel.com', 'www.intel.com',
+                    'nvidia.com', 'www.nvidia.com', 'salesforce.com', 'www.salesforce.com',
+                    
+                    # Developer Platforms
+                    'github.com', 'www.github.com', 'gitlab.com', 'www.gitlab.com',
+                    'stackoverflow.com', 'www.stackoverflow.com', 'stackexchange.com',
+                    'bitbucket.org', 'www.bitbucket.org', 'npmjs.com', 'www.npmjs.com',
+                    'pypi.org', 'www.pypi.org', 'packagist.org', 'www.packagist.org',
+                    
+                    # Media & Video
+                    'youtube.com', 'www.youtube.com', 'vimeo.com', 'www.vimeo.com',
+                    'twitch.tv', 'www.twitch.tv', 'spotify.com', 'www.spotify.com',
+                    'soundcloud.com', 'www.soundcloud.com',
+                    
+                    # E-commerce
+                    'ebay.com', 'www.ebay.com', 'aliexpress.com', 'www.aliexpress.com',
+                    'walmart.com', 'www.walmart.com', 'target.com', 'www.target.com',
+                    'bestbuy.com', 'www.bestbuy.com', 'etsy.com', 'www.etsy.com',
+                    
+                    # Education & Reference
+                    'wikipedia.org', 'www.wikipedia.org', 'wikimedia.org', 'www.wikimedia.org',
+                    'coursera.org', 'www.coursera.org', 'udemy.com', 'www.udemy.com',
+                    'khanacademy.org', 'www.khanacademy.org', 'edx.org', 'www.edx.org',
+                    'mit.edu', 'www.mit.edu', 'harvard.edu', 'www.harvard.edu',
+                    'stanford.edu', 'www.stanford.edu',
+                    
+                    # Cloud Services
+                    'aws.amazon.com', 'azure.microsoft.com', 'cloud.google.com',
+                    'digitalocean.com', 'www.digitalocean.com', 'heroku.com', 'www.heroku.com',
+                    'cloudflare.com', 'www.cloudflare.com', 'netlify.com', 'www.netlify.com',
+                    'vercel.com', 'www.vercel.com',
+                    
+                    # News & Media
+                    'cnn.com', 'www.cnn.com', 'bbc.com', 'www.bbc.com', 'bbc.co.uk',
+                    'nytimes.com', 'www.nytimes.com', 'reuters.com', 'www.reuters.com',
+                    'theguardian.com', 'www.theguardian.com', 'washingtonpost.com',
+                    'forbes.com', 'www.forbes.com', 'bloomberg.com', 'www.bloomberg.com',
+                    
+                    # Email & Communication
+                    'gmail.com', 'www.gmail.com', 'outlook.com', 'www.outlook.com',
+                    'protonmail.com', 'www.protonmail.com', 'mail.yahoo.com',
+                    'zoom.us', 'www.zoom.us', 'teams.microsoft.com', 'slack.com', 'www.slack.com',
+                    
+                    # Banking & Finance (Major ones)
+                    'paypal.com', 'www.paypal.com', 'stripe.com', 'www.stripe.com',
+                    'venmo.com', 'www.venmo.com', 'square.com', 'www.square.com',
+                    
+                    # Government
+                    'gov', 'gov.uk', 'usa.gov', 'irs.gov', 'nih.gov', 'nasa.gov',
+                    
+                    # Other Popular Sites
+                    'medium.com', 'www.medium.com', 'wordpress.com', 'www.wordpress.com',
+                    'blogger.com', 'www.blogger.com', 'tumblr.com', 'www.tumblr.com',
+                    'dropbox.com', 'www.dropbox.com', 'box.com', 'www.box.com',
+                    'trello.com', 'www.trello.com', 'notion.so', 'www.notion.so',
+                    'figma.com', 'www.figma.com', 'canva.com', 'www.canva.com'
+                ]
+                
+                hostname = urlparse(current_url).hostname
+                is_whitelisted = any(hostname and hostname.endswith(domain) for domain in safe_domains)
+                
                 # Extract features
-                features_df = extract_url_features(url_input)
+                features_df = extract_url_features(current_url)
                 
                 # Make prediction
                 prediction = model.predict(features_df)[0]
                 prediction_proba = model.predict_proba(features_df)[0]
-                label = label_encoder.inverse_transform([prediction])[0]
+                label_raw = label_encoder.inverse_transform([prediction])[0]
                 confidence = prediction_proba[prediction] * 100
+                
+                # Override with whitelist if applicable
+                if is_whitelisted and label_raw.lower() != 'benign':
+                    label = 'benign'
+                    confidence = 95.0  # High confidence for whitelisted domains
+                    st.info(f"ℹ️ Domain override: {hostname} is a known trusted domain")
+                else:
+                    label = label_raw
+                
+                # Debug: Show all class probabilities
+                all_classes = label_encoder.classes_
+                prob_dict = dict(zip(all_classes, prediction_proba))
                 
                 # Get risk information
                 verdict, risk_level, color, css_class, icon = get_risk_level(label)
@@ -665,6 +767,14 @@ def main():
                     """,
                     unsafe_allow_html=True
                 )
+                
+                # Debug info
+                with st.expander("🔍 Debug Information", expanded=False):
+                    st.write(f"**Predicted Label:** {label}")
+                    st.write(f"**Prediction Value:** {prediction}")
+                    st.write("**All Probabilities:**")
+                    for cls, prob in prob_dict.items():
+                        st.write(f"  - {cls}: {prob*100:.2f}%")
                 
                 # Enhanced metrics
                 st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
@@ -797,10 +907,10 @@ def main():
                 # Enhanced recommendations
                 st.markdown("<div style='height: 1rem;'></div>", unsafe_allow_html=True)
                 st.markdown("<div class='content-card'>", unsafe_allow_html=True)
-                st.markdown("### 💡 Security Recommendations")
+                st.markdown("<h3 style='color: #667eea;'>💡 Security Recommendations</h3>", unsafe_allow_html=True)
                 
                 if label.lower() == 'benign':
-                    st.markdown("""
+                    recommendation_html = """
                         <div style='padding: 1.5rem; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); 
                                    border-radius: 15px; color: white; margin: 1rem 0;'>
                             <h3 style='margin: 0 0 1rem 0;'>✅ URL Verified Safe</h3>
@@ -812,10 +922,11 @@ def main():
                                 <strong>⚠️ Best Practice:</strong> Always verify the sender before clicking links in emails
                             </p>
                         </div>
-                    """, unsafe_allow_html=True)
+                    """
+                    st.markdown(recommendation_html, unsafe_allow_html=True)
                 else:
                     threat_color = "#ee0979" if label.lower() == 'malware' else "#f7b733"
-                    st.markdown(f"""
+                    recommendation_html = f"""
                         <div style='padding: 1.5rem; background: linear-gradient(135deg, {threat_color} 0%, #ff6a00 100%); 
                                    border-radius: 15px; color: white; margin: 1rem 0; border: 3px solid white;'>
                             <h3 style='margin: 0 0 1rem 0;'>🚨 THREAT DETECTED: {label.upper()}</h3>
@@ -840,7 +951,8 @@ def main():
                                 <strong>⚠️ Confidence: {confidence:.1f}%</strong> - This is a HIGH CONFIDENCE threat detection
                             </p>
                         </div>
-                    """, unsafe_allow_html=True)
+                    """
+                    st.markdown(recommendation_html, unsafe_allow_html=True)
                 
                 st.markdown("</div>", unsafe_allow_html=True)
                 

@@ -114,6 +114,8 @@ malicious-url-detection/
 │   └── README.md                        # Model documentation
 ├── data/
 │   └── raw/                             # Dataset folder
+├── app.py                               # Streamlit web application
+├── STREAMLIT_GUIDE.md                   # Streamlit app documentation
 ├── .gitignore
 ├── LICENSE
 ├── README.md
@@ -140,40 +142,34 @@ malicious-url-detection/
    - Generate visualizations
    - Save all trained models
 
-### Option 2: Real-Time URL Scanning System 🚀
+### Option 2: Streamlit Web Application 🚀
 
-1. **Install additional dependencies**
+1. **Install Streamlit**
    ```bash
-   pip install flask flask-cors tensorflow
+   pip install streamlit
    ```
 
-2. **Start the Flask server**
+2. **Start the application**
    ```bash
-   python app.py
+   streamlit run app.py
    ```
 
-3. **Access the application**
-   - **Web Interface:** http://localhost:5000
-   - **API Documentation:** http://localhost:5000/api/models
-   - **Health Check:** http://localhost:5000/api/health
+3. **Access the app**
+   - Open your browser to http://localhost:8501
+   - Enter a URL in the text box
+   - Click "🚀 Analyze URL"
+   - View detailed predictions and feature analysis
 
-4. **API Usage Example**
-   ```python
-   import requests
+4. **Features:**
+   - Real-time URL analysis with instant results
+   - Visual prediction display with color-coded risk levels
+   - Detailed feature extraction breakdown
+   - Security recommendations
+   - Example URLs for quick testing
 
-   # Scan a single URL
-   response = requests.post('http://localhost:5000/api/scan', json={
-       'url': 'https://example.com',
-       'model': 'all'  # Options: 'all', 'rf', 'lstm', 'cnn'
-   })
+For complete documentation, see [STREAMLIT_GUIDE.md](STREAMLIT_GUIDE.md)
 
-   result = response.json()
-   print(f"Verdict: {result['consensus']}")
-   print(f"Risk Level: {result['risk_level']}")
-   print(f"Confidence: {result['average_confidence']:.2%}")
-   ```
-
-### Option 3: Using the Trained Model
+### Option 3: Using the Trained Model Programmatically
 
 ```python
 import pickle
@@ -252,6 +248,8 @@ The project includes comprehensive visualizations:
 ## 🚀 Implemented Features
 
 - [x] **Traditional ML models** (8 algorithms)
+- [x] **Interactive Streamlit web app** 🎨
+- [x] **Real-time URL analysis** with instant predictions
 - [x] **Comprehensive visualizations**
 - [x] **Feature extraction** (30+ features)
 - [x] **Hyperparameter tuning** (GridSearchCV)

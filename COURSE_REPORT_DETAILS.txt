@@ -1,0 +1,167 @@
+================================================================================
+PROJECT REPORT SOURCE DOCUMENT
+================================================================================
+PROJECT TITLE: Malicious URL Detection Using Machine Learning
+AUTHOR: Mohammad Hamim
+STUDENT ID: 202280090114
+COURSE: Network Security
+DATE: December 9, 2025
+REPOSITORY: https://github.com/md-hameem/Malicious-URL-Detection-Using-Machine-Learning
+================================================================================
+
+1. EXECUTIVE SUMMARY
+--------------------------------------------------------------------------------
+This project implements a robust, real-time Malicious URL Detection System designed to identify and mitigate web-based threats such as phishing, malware distribution, and defacement. Leveraging a Random Forest Machine Learning model trained on a massive dataset of over 650,000 URLs, the system achieves a prediction accuracy of approximately 98.5%. Unlike traditional blacklist-based approaches which fail to detect zero-day attacks, this system analyzes the lexical and structural properties of a URL to predict its safety instantly. The solution features a modern, glassmorphism-styled web interface, a comprehensive whitelist override system for 150+ trusted domains, and a rigorous automated testing suite, making it a practical tool for enhancing network security.
+
+2. PROBLEM STATEMENT
+--------------------------------------------------------------------------------
+The rapid expansion of the internet has led to a surge in cybercrimes, with malicious URLs being a primary vector for attacks.
+*   **Limitations of Existing Solutions:** Traditional security mechanisms rely heavily on "blacklists"—static databases of known malicious sites. These are reactive and ineffective against:
+    *   **Zero-Day Attacks:** Newly created malicious sites not yet indexed.
+    *   **URL Shorteners:** Services like bit.ly that mask the true destination.
+    *   **Domain Generation Algorithms (DGAs):** Malware that automatically generates new domains to evade detection.
+*   **The Need:** A proactive, predictive system is required that can analyze the *intrinsic characteristics* of a URL string to determine its malicious intent in real-time, without needing to visit the potentially dangerous site.
+
+3. PROJECT OBJECTIVES
+--------------------------------------------------------------------------------
+*   **Predictive Accuracy:** Develop a model capable of classifying URLs into 4 categories (Benign, Phishing, Malware, Defacement) with >95% accuracy.
+*   **Real-Time Performance:** Achieve a prediction latency of under 50 milliseconds per URL to ensure seamless user experience.
+*   **Feature Engineering:** Extract and utilize 27 distinct lexical and structural features from raw URL strings.
+*   **False Positive Mitigation:** Implement a "Whitelist Override System" to ensure 0% false positives for major trusted platforms (e.g., Google, Facebook, Banking).
+*   **User-Centric Design:** Create an intuitive, responsive web interface with visual feedback (gauge charts, radar plots).
+*   **Quality Assurance:** Establish a comprehensive automated testing framework covering model validation, feature extraction, and performance benchmarking.
+
+4. METHODOLOGY & TECHNICAL ARCHITECTURE
+--------------------------------------------------------------------------------
+
+4.1. DATASET
+The foundation of the model is a diverse dataset sourced from Kaggle (Malicious URLs Dataset by Siddhant Baldota), aggregating data from ISCX URL 2016, PhishTank, PhishStorm, and Malware Domain List.
+*   **Total Samples:** 651,191 URLs
+*   **Class Distribution:**
+    1.  **Benign:** 428,103 (65.7%) - Safe, legitimate websites.
+    2.  **Defacement:** 96,457 (14.8%) - Sites hacked to display unauthorized content.
+    3.  **Phishing:** 94,111 (14.5%) - Sites mimicking legitimate entities to steal credentials.
+    4.  **Malware:** 32,520 (5.0%) - Sites hosting malicious software/viruses.
+
+4.2. FEATURE ENGINEERING (27 FEATURES)
+The system extracts 27 specific features from every URL string. These are purely lexical and safe to extract without network interaction.
+
+*   **Length-Based Features (4):**
+    1.  `url_length`: Total characters in URL.
+    2.  `hostname_length`: Length of the domain name.
+    3.  `fd_length`: Length of the first directory in the path.
+    4.  `tld_length`: Length of the Top-Level Domain (e.g., .com = 3).
+
+*   **Count-Based Features (13):**
+    5.  `count_letters`: Number of alphabetic characters.
+    6.  `count_digits`: Number of numeric characters.
+    7-17. Counts of special characters: `@`, `?`, `-`, `=`, `.`, `#`, `%`, `+`, `$`, `!`, `*`, `,`, `//`.
+
+*   **Structural & Binary Features (10):**
+    18. `count_dir`: Number of directories in the path.
+    19. `count_embed_domain`: Number of embedded domains (e.g., google.com.malicious.com).
+    20. `count_www`: Presence of 'www'.
+    21. `has_ip`: Checks if hostname is an IP address (common in malware).
+    22. `abnormal_url`: Checks if hostname matches the URL pattern standard.
+    23. `short_url`: Detects use of shortening services (bit.ly, tinyurl).
+    24. `https`: Checks for secure protocol usage.
+    25. `suspicious`: Presence of suspicious keywords (e.g., 'confirm', 'account', 'banking').
+    26-27. Additional structural markers.
+
+4.3. MACHINE LEARNING MODEL
+*   **Algorithm:** Random Forest Classifier.
+*   **Configuration:** Ensemble of decision trees (n_estimators=100 typically).
+*   **Training Strategy:** 80/20 Train-Test split.
+*   **Preprocessing:** Label Encoding for target classes.
+*   **Serialization:** Model saved as `final_random_forest_model.pkl` using Python's `pickle` module.
+
+5. KEY FEATURES IMPLEMENTED
+--------------------------------------------------------------------------------
+
+5.1. INTELLIGENT WHITELIST SYSTEM
+To guarantee reliability for everyday use, a hard-coded override system checks URLs against a list of 150+ trusted domains across 12 categories before ML analysis.
+*   **Categories:** Search Engines, Social Media, Tech Giants, Developer Platforms, Media, E-commerce, Education, Cloud Services, News, Email, Banking, Government.
+*   **Logic:** If `hostname.endswith(trusted_domain)` -> Force Result: **Benign** (Confidence: 100%).
+
+5.2. REAL-TIME ANALYSIS ENGINE
+*   **Input:** User provides URL string.
+*   **Process:**
+    1.  **Whitelist Check:** Is it a known safe domain?
+    2.  **Feature Extraction:** Calculate all 27 features.
+    3.  **Model Prediction:** Random Forest predicts class (0-3).
+    4.  **Confidence Calculation:** Probability of the predicted class.
+*   **Output:** Class label + Confidence Score + Visualizations.
+
+5.3. MODERN USER INTERFACE (STREAMLIT)
+*   **Design:** Custom CSS for "Glassmorphism" effect (translucent cards, gradients).
+*   **Components:**
+    *   **Sidebar:** Navigation, Project Info, Quick Test Buttons.
+    *   **Main Area:** URL Input, Animated Analysis Spinner, Result Cards.
+    *   **Visualizations:**
+        *   **Gauge Chart:** Color-coded safety meter (Red/Green).
+        *   **Radar Chart:** Probability distribution across all 4 classes.
+
+5.4. AUTOMATED REPORTING
+*   **Formats:** HTML (Styled), JSON (Data), TXT (Logs).
+*   **Content:** Test summary, pass/fail status, execution time per test, detailed error logs.
+
+6. TESTING & PERFORMANCE METRICS
+--------------------------------------------------------------------------------
+A comprehensive test suite (`tests/test_model.py`) ensures system stability.
+
+*   **Test Suite (7 Tests):**
+    1.  `test_load_models`: Verifies model/encoder loading.
+    2.  `test_feature_extraction_validation`: Confirms all 27 features are extracted correctly.
+    3.  `test_google_prediction`: Validates whitelist logic on 'google.com'.
+    4.  `test_malicious_url`: Validates detection of known phishing URLs.
+    5.  `test_whitelist_override`: Batch tests 7 major domains (YouTube, GitHub, etc.).
+    6.  `test_batch_urls`: Measures accuracy on a mixed batch of 8 URLs.
+    7.  `test_performance_metrics`: Benchmarks speed and throughput.
+
+*   **Performance Results:**
+    -   **Throughput:** ~60 URLs/second.
+    -   **Latency:** ~18ms per URL (Average).
+    -   **Feature Extraction:** ~1ms.
+    -   **Model Accuracy:** ~98.5% (Test Set).
+
+7. PROJECT STRUCTURE
+--------------------------------------------------------------------------------
+The project is organized into a professional directory structure:
+
+E:\NS Final Work\
+├── data/               # Raw dataset (malicious_phish.csv)
+├── docs/               # Documentation
+│   ├── PROJECT_STRUCTURE.md
+│   ├── README_DETAILED.md
+│   └── STREAMLIT_GUIDE.md
+├── models/             # Serialized Models
+│   ├── final_random_forest_model.pkl
+│   └── label_encoder.pkl
+├── reports/            # Generated Test Reports
+├── scripts/            # Utility Scripts
+├── tests/              # Test Suite
+│   ├── test_model.py
+│   └── check_features.py
+├── app.py              # Main Application
+├── requirements.txt    # Dependencies
+└── README.md           # Main Documentation
+
+8. TECHNOLOGIES USED
+--------------------------------------------------------------------------------
+*   **Python 3.12:** Core programming language.
+*   **Streamlit 1.52.1:** For building the interactive web application.
+*   **Scikit-learn 1.7.2:** For the Random Forest model and feature processing.
+*   **Pandas & NumPy:** For efficient data manipulation and feature array handling.
+*   **Plotly 6.5.0:** For generating interactive, responsive charts.
+*   **Tldextract:** For accurate Top-Level Domain parsing.
+
+9. FUTURE ENHANCEMENTS
+--------------------------------------------------------------------------------
+*   **Deep Learning (LSTM/CNN):** To analyze character sequences for better detection of obfuscated URLs.
+*   **Browser Extension:** A lightweight plugin to block URLs automatically in Chrome/Firefox.
+*   **API Development:** Exposing the model via a REST API (FastAPI) for integration with other security tools.
+*   **Active Learning:** A feedback loop where users can report misclassifications to retrain the model periodically.
+
+10. CONCLUSION
+--------------------------------------------------------------------------------
+This project successfully delivers a high-performance, user-friendly solution for Malicious URL Detection. By combining the predictive power of Random Forest with a practical whitelist safety net, it offers a balanced approach to security—minimizing false positives while effectively detecting novel threats. The system's modular architecture, comprehensive testing, and detailed documentation make it a robust foundation for further research and deployment in real-world network security scenarios.

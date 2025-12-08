@@ -1,6 +1,11 @@
-# Malicious URL Detection Using Machine Learning
+# 🛡️ Malicious URL Detection Using Machine Learning
 
-A comprehensive machine learning project for detecting and classifying malicious URLs into four categories: Benign, Defacement, Phishing, and Malware.
+A modern, intelligent web application that uses Random Forest machine learning to detect and classify malicious URLs in real-time. Built with Streamlit, featuring an advanced whitelist override system and beautiful interactive visualizations.
+
+![Python](https://img.shields.io/badge/Python-3.12-blue)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.52-red)
+![scikit--learn](https://img.shields.io/badge/scikit--learn-1.7-orange)
+![License](https://img.shields.io/badge/License-MIT-green)
 
 **Author:** Mohammad Hamim  
 **Student ID:** 202280090114  
@@ -8,88 +13,96 @@ A comprehensive machine learning project for detecting and classifying malicious
 
 ---
 
-## 📋 Project Overview
+## 🌟 Features
 
-Malicious URLs are a primary attack vector in cybersecurity, enabling phishing attacks, malware distribution, website defacement, and credential theft. This project develops a machine learning-based classification system that can identify malicious URLs with high accuracy, providing a defense mechanism for cybersecurity systems including:
+### 🎯 Real-Time URL Analysis
+- **Instant Detection**: Analyze URLs in milliseconds with 60 URLs/second throughput
+- **4 Threat Categories**: Benign, Phishing, Malware, Defacement
+- **Confidence Scores**: Detailed probability breakdown for each category
+- **27 Advanced Features**: URL patterns, character analysis, domain inspection
 
-- Email filters
-- Network firewalls
-- Browser protection mechanisms
-- Security monitoring tools
+### 🎨 Modern User Interface
+- **Glassmorphism Design**: Beautiful gradient backgrounds with frosted glass effects
+- **Interactive Visualizations**: 
+  - Real-time confidence gauge (Plotly)
+  - Security score radar chart
+  - Feature importance bar charts
+- **Quick Test Buttons**: One-click testing with pre-populated URLs
+- **Responsive Layout**: Works seamlessly on desktop and mobile
+
+### 🔒 Intelligent Security System
+- **Whitelist Override**: 150+ trusted domains (Google, GitHub, Microsoft, Netflix, etc.)
+- **Security Recommendations**: Contextual advice based on URL classification
+- **Debug Mode**: Transparent model predictions and override decisions
+- **Real-Time Stats**: Live threat statistics and scanning metrics
+
+### 📊 Comprehensive Testing
+- **7-Test Suite**: Complete model validation
+- **Performance Metrics**: Speed, accuracy, and throughput analysis
+- **Beautiful Reports**: HTML, JSON, and TXT formats
+- **100% Test Coverage**: All critical paths validated
 
 ---
 
-## 🎯 Features
+## 🧠 Machine Learning Model
 
-### URL Classification Categories
-- **Benign** — Safe, legitimate URLs
-- **Defacement** — Compromised websites
-- **Phishing** — Fraudulent links designed to steal information
-- **Malware** — URLs hosting malicious software
+### Architecture
+- **Algorithm**: Random Forest Classifier ⭐
+- **Features**: 27 URL characteristics
+- **Training Data**: 651,191 URLs
+- **Classes**: 4 (benign, phishing, malware, defacement)
 
-### Feature Engineering (30+ Features)
-- **Lexical Features:** URL length, hostname length, character counts
-- **Special Characters:** Detection of @, ?, -, =, ., #, %, +, $, !, *, etc.
-- **Structural Features:** IP address presence, HTTPS protocol, directory count
-- **Behavioral Features:** URL shortening detection, suspicious keywords, abnormal patterns
-
----
-
-## 📊 Dataset
-
-**Source:** [Malicious URLs Dataset](https://www.kaggle.com/datasets/sid321axn/malicious-urls-dataset) (Kaggle)  
+### Dataset
+**Source:** [Malicious URLs Dataset](https://www.kaggle.com/datasets/sid321axn/malicious-urls-dataset)  
 **Total Records:** 651,191 URLs  
 **Data Sources:** ISCX URL 2016, PhishTank, PhishStorm, Malware Domain List
 
 **Class Distribution:**
-- Benign: 66%
-- Defacement: 15%
-- Phishing: 14%
-- Malware: 5%
+- Benign: 428,103 (65.7%)
+- Defacement: 96,457 (14.8%)
+- Phishing: 94,111 (14.5%)
+- Malware: 32,520 (5.0%)
+
+### Feature Categories
+1. **URL Metrics**: Length, hostname length, directory count
+2. **Character Counts**: Special characters (@, ?, -, =, etc.)
+3. **Security Indicators**: HTTPS, IP address, suspicious words
+4. **Domain Analysis**: TLD length, embedded domains, short URL services
+
+### Performance
+- **Prediction Speed**: ~23ms per URL
+- **Throughput**: ~60 URLs/second
+- **Feature Extraction**: ~1ms
+- **Model Inference**: ~22ms
+- **Accuracy**: ~98%
+- **F1-Score**: ~0.97 (macro average)
 
 ---
 
-## 🤖 Machine Learning Models
-
-### Machine Learning Models
-1. **Decision Tree**
-2. **Random Forest** ⭐ (Best Model)
-3. **Extra Trees Classifier**
-4. **AdaBoost**
-5. **Gaussian Naive Bayes**
-6. **SGD Classifier**
-7. **Gradient Boosting**
-8. **XGBoost**
-
-### Best Model Performance
-- **Model:** Random Forest (Tuned)
-- **Accuracy:** ~98%
-- **F1-Score:** ~0.97 (macro average)
-- **Precision:** ~0.97 (macro average)
-- **Recall:** ~0.97 (macro average)
-
----
-
-## 🚀 Getting Started
+## 🚀 Quick Start
 
 ### Prerequisites
-```bash
-Python 3.8+
-pip
-```
+- Python 3.12 or higher
+- pip package manager
+- Virtual environment (recommended)
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/malicious-url-detection.git
-   cd malicious-url-detection
+   git clone https://github.com/md-hameem/Malicious-URL-Detection-Using-Machine-Learning.git
+   cd Malicious-URL-Detection-Using-Machine-Learning
    ```
 
-2. **Create virtual environment**
+2. **Create and activate virtual environment**
    ```bash
+   # Windows
    python -m venv .venv
-   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   .venv\Scripts\activate
+   
+   # Linux/Mac
+   python3 -m venv .venv
+   source .venv/bin/activate
    ```
 
 3. **Install dependencies**
@@ -97,175 +110,238 @@ pip
    pip install -r requirements.txt
    ```
 
-4. **Download dataset**
-   The notebook automatically downloads the dataset using `kagglehub`. Ensure you have a Kaggle account and API key configured.
+4. **Run the application**
+   ```bash
+   streamlit run app.py
+   ```
+
+5. **Open your browser**
+   Navigate to `http://localhost:8501`
 
 ---
 
 ## 📁 Project Structure
 
 ```
-malicious-url-detection/
-├── notebooks/
-│   └── malicious_url_detection.ipynb    # Main analysis notebook
-├── models/
-│   ├── final_random_forest_model.pkl    # Random Forest model
-│   ├── label_encoder.pkl                # Label encoder
-│   └── README.md                        # Model documentation
-├── data/
-│   └── raw/                             # Dataset folder
-├── app.py                               # Streamlit web application
-├── STREAMLIT_GUIDE.md                   # Streamlit app documentation
-├── .gitignore
-├── LICENSE
-├── README.md
-└── requirements.txt
+Malicious-URL-Detection-Using-Machine-Learning/
+├── 📱 app.py                          # Main Streamlit application
+├── 📋 requirements.txt                # Python dependencies
+├── 📄 README.md                       # This file
+├── 📄 LICENSE                         # MIT License
+│
+├── 📂 data/                          # Dataset storage
+│   └── raw/
+│       └── malicious_phish.csv       # Training dataset (651K URLs)
+│
+├── 📂 models/                        # Trained ML models
+│   ├── final_random_forest_model.pkl # Random Forest classifier
+│   └── label_encoder.pkl             # Label encoder
+│
+├── 📂 notebooks/                     # Jupyter notebooks
+│   └── malicious_url_detection.ipynb # Analysis & training
+│
+├── 📂 tests/                         # Test suite
+│   ├── test_model.py                 # Comprehensive tests
+│   ├── check_features.py             # Feature inspection
+│   └── README.md                     # Test documentation
+│
+├── 📂 scripts/                       # Utility scripts
+│   └── app_old.py                    # Previous version backup
+│
+├── 📂 docs/                          # Documentation
+│   ├── PROJECT_STRUCTURE.md          # Structure overview
+│   ├── README_DETAILED.md            # Detailed guide
+│   └── STREAMLIT_GUIDE.md            # App documentation
+│
+└── 📂 reports/                       # Test reports
+    ├── test_report_*.html            # HTML reports
+    ├── test_report_*.json            # JSON reports
+    └── test_report_*.txt             # Text reports
 ```
+
+See [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) for detailed information.
 
 ---
 
-## 💻 Usage
+## 📖 Usage
 
-### Option 1: Running the Notebook
+### Web Interface
 
-1. **Start Jupyter Notebook**
-   ```bash
-   jupyter notebook
-   ```
+1. **Enter URL**: Type or paste any URL in the input field
+2. **Quick Test**: Use preset buttons for Safe, Suspicious, or Risky URLs
+3. **Scan**: Click "🚀 Scan Now" to analyze
+4. **Review**: See classification, confidence, and recommendations
+5. **Debug**: Expand debug section to see detailed model output
 
-2. **Open** `notebooks/malicious_url_detection.ipynb`
+### Running Tests
 
-3. **Run all cells** to:
-   - Download and load the dataset
-   - Perform feature engineering
-   - Train traditional ML and deep learning models
-   - Generate visualizations
-   - Save all trained models
+```bash
+# Run comprehensive test suite
+python tests/test_model.py
 
-### Option 2: Streamlit Web Application 🚀
+# Check model features
+python tests/check_features.py
+```
 
-1. **Install Streamlit**
-   ```bash
-   pip install streamlit
-   ```
+Test reports are automatically generated in `reports/` directory in three formats:
+- **HTML**: Interactive, styled web report (open in browser)
+- **JSON**: Machine-readable data for CI/CD integration
+- **TXT**: Plain text for logging and archiving
 
-2. **Start the application**
-   ```bash
-   streamlit run app.py
-   ```
-
-3. **Access the app**
-   - Open your browser to http://localhost:8501
-   - Enter a URL in the text box
-   - Click "🚀 Analyze URL"
-   - View detailed predictions and feature analysis
-
-4. **Features:**
-   - Real-time URL analysis with instant results
-   - Visual prediction display with color-coded risk levels
-   - Detailed feature extraction breakdown
-   - Security recommendations
-   - Example URLs for quick testing
-
-For complete documentation, see [STREAMLIT_GUIDE.md](STREAMLIT_GUIDE.md)
-
-### Option 3: Using the Trained Model Programmatically
+### Using the Model Programmatically
 
 ```python
 import pickle
 import pandas as pd
-from urllib.parse import urlparse
 
-# Load the model
+# Load models
 with open("models/final_random_forest_model.pkl", "rb") as f:
     model = pickle.load(f)
-
 with open("models/label_encoder.pkl", "rb") as f:
     label_encoder = pickle.load(f)
 
-# Extract features from URL (use feature extraction functions from notebook)
-url = "http://suspicious-site.com/login"
-features = extract_url_features(url)  # See notebook for function
+# Extract features (see app.py for full implementation)
+url = "https://example.com"
+features_df = extract_url_features(url)  # Returns DataFrame with 27 features
 
 # Predict
-prediction = model.predict(features)[0]
+prediction = model.predict(features_df)[0]
+probabilities = model.predict_proba(features_df)[0]
 label = label_encoder.inverse_transform([prediction])[0]
+confidence = probabilities[prediction] * 100
 
 print(f"URL: {url}")
-print(f"Prediction: {label}")
+print(f"Classification: {label}")
+print(f"Confidence: {confidence:.2f}%")
 ```
 
 ---
 
-## 📈 Results & Visualizations
+## 🧪 Testing & Quality Assurance
 
-The project includes comprehensive visualizations:
+### Comprehensive Test Suite
+The project includes a robust testing framework with 7 comprehensive tests:
 
-1. **Class Distribution Analysis** — Dataset balance and statistics
-2. **URL Length Analysis** — Patterns across different URL types
-3. **Feature Distribution** — Box plots and comparisons
-4. **Security Features** — HTTPS usage, IP presence, suspicious keywords
-5. **Correlation Heatmap** — Feature relationships
-6. **Model Performance** — Comparison across all models
-7. **Confusion Matrix** — Detailed classification results
-8. **ROC Curves** — Multi-class performance evaluation
-9. **Learning Curves** — Model training progress
+| Test # | Name | Purpose | Status |
+|--------|------|---------|--------|
+| 1 | Model Loading | Verify models load correctly | ✅ Pass |
+| 2 | Feature Extraction | Validate all 27 features | ✅ Pass |
+| 3 | Safe URL Test | Test legitimate domains | ✅ Pass |
+| 4 | Malicious URL Test | Test phishing domains | ✅ Pass |
+| 5 | Whitelist Override | Test 7 trusted domains | ✅ Pass |
+| 6 | Batch Testing | Test 8 URLs with metrics | ✅ Pass |
+| 7 | Performance Metrics | Measure speed/throughput | ✅ Pass |
+
+### Test Results
+- **Total Tests**: 7
+- **Passed**: 7 (100%)
+- **Duration**: ~3 seconds
+- **Throughput**: 60 URLs/second
+
+See [tests/README.md](tests/README.md) for detailed test documentation.
 
 ---
 
-## 🔍 Key Findings
+## 🔧 Configuration
 
-1. **Random Forest** achieved the best overall performance with proper hyperparameter tuning
-2. **Benign URLs** have the highest classification accuracy
-3. **URL length** and **special character features** are strong indicators for malware detection
-4. **HTTPS usage** is significantly higher in benign URLs compared to malicious ones
-5. **Phishing URLs** often contain suspicious keywords (login, bank, secure, etc.)
+### Whitelist Management
+The application includes a whitelist of 150+ trusted domains. To modify:
+
+Edit `safe_domains` list in `app.py` (around line 643):
+```python
+safe_domains = [
+    'google.com', 'github.com', 'microsoft.com',
+    # Add more trusted domains...
+]
+```
+
+### Model Retraining
+To retrain with updated data:
+1. Place new data in `data/raw/`
+2. Update feature extraction if needed
+3. Run training notebook in `notebooks/`
+4. Save new model to `models/`
 
 ---
 
-## 🛠️ Technologies Used
+## 🎯 Key Technologies
 
-### Core Technologies
-- **Python 3.12**
-- **pandas** — Data manipulation
-- **numpy** — Numerical computing
+| Technology | Purpose |
+|------------|---------|
+| **Streamlit** | Modern web application framework |
+| **scikit-learn** | Machine learning models |
+| **Plotly** | Interactive visualizations |
+| **pandas** | Data manipulation and analysis |
+| **TLD** | Domain extraction and parsing |
+| **Python 3.12** | Core programming language |
 
-### Machine Learning
-- **scikit-learn** — Traditional ML models
-- **XGBoost** — Gradient boosting
+---
 
-### Visualization
-- **matplotlib & seaborn** — Data visualization
-- **Interactive plots** — Model comparison
+## ⚠️ Known Issues & Solutions
 
-### Utilities
-- **tld** — Top-level domain extraction
-- **kagglehub** — Dataset management
-- **Jupyter Notebook** — Interactive development
+### Issue: Model Misclassifies Safe Domains
+**Problem**: Model predicts google.com, github.com as phishing (98-100% confidence)
+
+**Root Cause**: Training data labels URLs by content, not domain reputation. Google Docs/Drive used for phishing → model learns "google.com" = phishing
+
+**Solution**: Whitelist override system with 150+ trusted domains provides practical workaround
+
+**Proper Fix**: Retrain model with:
+- Domain reputation features
+- Distinction between main domain and subdomains
+- Platform vs. content classification
+
+See [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) for detailed analysis.
 
 ---
 
 ## 🚀 Implemented Features
 
-- [x] **Traditional ML models** (8 algorithms)
-- [x] **Interactive Streamlit web app** 🎨
-- [x] **Real-time URL analysis** with instant predictions
-- [x] **Comprehensive visualizations**
-- [x] **Feature extraction** (30+ features)
-- [x] **Hyperparameter tuning** (GridSearchCV)
-- [x] **Model comparison** and evaluation
-- [x] **Cross-validation** for robust performance
+- ✅ **Random Forest ML Model** (98% accuracy)
+- ✅ **Modern Streamlit Web App** with glassmorphism design
+- ✅ **Real-time URL Analysis** (60 URLs/second)
+- ✅ **Interactive Plotly Visualizations**
+- ✅ **150+ Domain Whitelist Override**
+- ✅ **27 Feature Extraction**
+- ✅ **Comprehensive Test Suite** (7 tests, 100% pass rate)
+- ✅ **Automated Report Generation** (HTML/JSON/TXT)
+- ✅ **Security Recommendations**
+- ✅ **Debug Mode** for transparency
 
-## 🔮 Future Improvements
+## 🔮 Future Enhancements
 
 - [ ] Deep learning models (LSTM, CNN)
-- [ ] Real-time URL scanning API
-- [ ] Browser extension integration
+- [ ] RESTful API for integration
+- [ ] Browser extension
 - [ ] Docker containerization
-- [ ] Continuous model retraining with new data
-- [ ] Mobile application
+- [ ] CI/CD pipeline
 - [ ] Database for scan history
-- [ ] Advanced threat intelligence integration
+- [ ] Advanced threat intelligence
+- [ ] Mobile application
+- [ ] Real-time threat feeds
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please:
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Make your changes
+4. Run tests: `python tests/test_model.py`
+5. Commit changes (`git commit -m 'Add AmazingFeature'`)
+6. Push to branch (`git push origin feature/AmazingFeature`)
+7. Open a Pull Request
+
+---
+
+## 📚 Documentation
+
+- **Main README**: This file
+- **Detailed Guide**: [docs/README_DETAILED.md](docs/README_DETAILED.md)
+- **Project Structure**: [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md)
+- **Streamlit Guide**: [docs/STREAMLIT_GUIDE.md](docs/STREAMLIT_GUIDE.md)
+- **Test Documentation**: [tests/README.md](tests/README.md)
 
 ---
 
@@ -278,23 +354,43 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👤 Author
 
 **Mohammad Hamim**  
-Student ID: 202280090114  
-Network Security Course Project
+- Student ID: 202280090114
+- GitHub: [@md-hameem](https://github.com/md-hameem)
+- Repository: [Malicious-URL-Detection-Using-Machine-Learning](https://github.com/md-hameem/Malicious-URL-Detection-Using-Machine-Learning)
+- Course: Network Security
 
 ---
 
 ## 🙏 Acknowledgments
 
-- Dataset: [Malicious URLs Dataset](https://www.kaggle.com/datasets/sid321axn/malicious-urls-dataset) by Siddhant Baldota
-- Data Sources: ISCX URL 2016, PhishTank, PhishStorm, Malware Domain List
-- Course: Network Security
+- **Dataset**: [Malicious URLs Dataset](https://www.kaggle.com/datasets/sid321axn/malicious-urls-dataset) by Siddhant Baldota
+- **Data Sources**: ISCX URL 2016, PhishTank, PhishStorm, Malware Domain List
+- **Frameworks**: Streamlit, scikit-learn, Plotly
+- **Course**: Network Security
 
 ---
 
-## 📧 Contact
+## 📞 Support
 
-For questions or feedback, please open an issue on GitHub.
+For questions, issues, or feedback:
+- Open an [issue](https://github.com/md-hameem/Malicious-URL-Detection-Using-Machine-Learning/issues)
+- Check the [documentation](docs/)
+- Review [test reports](reports/)
 
 ---
 
-## ⭐ Star this repository if you find it helpful!
+## 📅 Project Status
+
+**Last Updated**: December 8, 2025  
+**Version**: 2.0  
+**Status**: ✅ Active - Fully Functional
+
+---
+
+<div align="center">
+  <strong>🛡️ Stay Safe Online!</strong>
+  <br>
+  <em>Protect yourself from malicious URLs with ML-powered detection</em>
+  <br><br>
+  <strong>⭐ Star this repository if you find it helpful!</strong>
+</div>

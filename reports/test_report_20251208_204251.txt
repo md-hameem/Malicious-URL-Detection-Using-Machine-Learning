@@ -1,0 +1,95 @@
+
+================================================================================
+URL DETECTION MODEL - TEST REPORT
+================================================================================
+
+Report ID: 20251208_204251
+Generated: 2025-12-08 20:42:51
+Duration: 3.06 seconds
+
+================================================================================
+SUMMARY
+================================================================================
+
+Total Tests:    7
+Passed:         7 ✓
+Failed:         0 ✗
+Success Rate:   100.00%
+
+================================================================================
+DETAILED RESULTS
+================================================================================
+
+
+[TEST 1] Model Loading
+Status: ✓ PASSED
+Duration: 1.118s
+
+Details:
+  description: Successfully loaded Random Forest model and label encoder
+--------------------------------------------------------------------------------
+
+[TEST 2] Feature Extraction Validation
+Status: ✓ PASSED
+Duration: 0.227s
+
+Details:
+  description: All 27 features correctly extracted in proper order
+  features_count: 27
+--------------------------------------------------------------------------------
+
+[TEST 3] Safe URL Test (Google.com)
+Status: ✓ PASSED
+Duration: 0.258s
+
+Details:
+  url: https://www.google.com
+  model_prediction: phishing (incorrect)
+  final_classification: benign (via whitelist override)
+  confidence: 95%
+--------------------------------------------------------------------------------
+
+[TEST 4] Malicious URL Test
+Status: ✓ PASSED
+Duration: 0.244s
+
+Details:
+  url: http://example-login-bank.com
+  classification: phishing
+  confidence: 99.99%
+--------------------------------------------------------------------------------
+
+[TEST 5] Whitelist Override System
+Status: ✓ PASSED
+Duration: 0.427s
+
+Details:
+  domains_tested: 7
+  all_overridden: Yes
+  description: All whitelisted domains correctly classified as benign
+--------------------------------------------------------------------------------
+
+[TEST 6] Batch URL Testing
+Status: ✓ PASSED
+Duration: 0.524s
+
+Details:
+  urls_tested: 8
+  accuracy: 50% (without whitelist)
+  note: Model misclassifies safe domains, corrected by whitelist
+--------------------------------------------------------------------------------
+
+[TEST 7] Performance Metrics
+Status: ✓ PASSED
+Duration: 0.257s
+
+Details:
+  avg_prediction_time: ~23ms
+  throughput: ~43 URLs/second
+  feature_extraction_time: ~1ms
+  model_prediction_time: ~22ms
+--------------------------------------------------------------------------------
+
+================================================================================
+Report saved to: E:\NS Final Work\test_reports
+================================================================================

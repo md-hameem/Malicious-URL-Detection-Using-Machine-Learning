@@ -51,9 +51,9 @@ Malicious URLs are a primary attack vector in cybersecurity, enabling phishing a
 
 ## 🤖 Machine Learning Models
 
-### Models Evaluated
+### Machine Learning Models
 1. **Decision Tree**
-2. **Random Forest** ⭐ (Best Performance)
+2. **Random Forest** ⭐ (Best Model)
 3. **Extra Trees Classifier**
 4. **AdaBoost**
 5. **Gaussian Naive Bayes**
@@ -109,10 +109,11 @@ malicious-url-detection/
 ├── notebooks/
 │   └── malicious_url_detection.ipynb    # Main analysis notebook
 ├── models/
-│   ├── final_random_forest_model.pkl    # Trained model
-│   └── label_encoder.pkl                # Label encoder
+│   ├── final_random_forest_model.pkl    # Random Forest model
+│   ├── label_encoder.pkl                # Label encoder
+│   └── README.md                        # Model documentation
 ├── data/
-│   └── raw/                             # Dataset folder (auto-downloaded)
+│   └── raw/                             # Dataset folder
 ├── .gitignore
 ├── LICENSE
 ├── README.md
@@ -123,7 +124,7 @@ malicious-url-detection/
 
 ## 💻 Usage
 
-### Running the Notebook
+### Option 1: Running the Notebook
 
 1. **Start Jupyter Notebook**
    ```bash
@@ -135,11 +136,44 @@ malicious-url-detection/
 3. **Run all cells** to:
    - Download and load the dataset
    - Perform feature engineering
-   - Train and evaluate models
+   - Train traditional ML and deep learning models
    - Generate visualizations
-   - Save the best model
+   - Save all trained models
 
-### Using the Trained Model
+### Option 2: Real-Time URL Scanning System 🚀
+
+1. **Install additional dependencies**
+   ```bash
+   pip install flask flask-cors tensorflow
+   ```
+
+2. **Start the Flask server**
+   ```bash
+   python app.py
+   ```
+
+3. **Access the application**
+   - **Web Interface:** http://localhost:5000
+   - **API Documentation:** http://localhost:5000/api/models
+   - **Health Check:** http://localhost:5000/api/health
+
+4. **API Usage Example**
+   ```python
+   import requests
+
+   # Scan a single URL
+   response = requests.post('http://localhost:5000/api/scan', json={
+       'url': 'https://example.com',
+       'model': 'all'  # Options: 'all', 'rf', 'lstm', 'cnn'
+   })
+
+   result = response.json()
+   print(f"Verdict: {result['consensus']}")
+   print(f"Risk Level: {result['risk_level']}")
+   print(f"Confidence: {result['average_confidence']:.2%}")
+   ```
+
+### Option 3: Using the Trained Model
 
 ```python
 import pickle
@@ -195,26 +229,45 @@ The project includes comprehensive visualizations:
 
 ## 🛠️ Technologies Used
 
+### Core Technologies
 - **Python 3.12**
 - **pandas** — Data manipulation
-- **scikit-learn** — Machine learning models
+- **numpy** — Numerical computing
+
+### Machine Learning
+- **scikit-learn** — Traditional ML models
 - **XGBoost** — Gradient boosting
-- **matplotlib & seaborn** — Visualizations
+
+### Visualization
+- **matplotlib & seaborn** — Data visualization
+- **Interactive plots** — Model comparison
+
+### Utilities
 - **tld** — Top-level domain extraction
 - **kagglehub** — Dataset management
 - **Jupyter Notebook** — Interactive development
 
 ---
 
-## 🚀 Future Improvements
+## 🚀 Implemented Features
+
+- [x] **Traditional ML models** (8 algorithms)
+- [x] **Comprehensive visualizations**
+- [x] **Feature extraction** (30+ features)
+- [x] **Hyperparameter tuning** (GridSearchCV)
+- [x] **Model comparison** and evaluation
+- [x] **Cross-validation** for robust performance
+
+## 🔮 Future Improvements
 
 - [ ] Deep learning models (LSTM, CNN)
-- [ ] Real-time URL scanning system
+- [ ] Real-time URL scanning API
 - [ ] Browser extension integration
-- [ ] REST API deployment (FastAPI/Flask)
 - [ ] Docker containerization
 - [ ] Continuous model retraining with new data
-- [ ] Web dashboard for predictions
+- [ ] Mobile application
+- [ ] Database for scan history
+- [ ] Advanced threat intelligence integration
 
 ---
 

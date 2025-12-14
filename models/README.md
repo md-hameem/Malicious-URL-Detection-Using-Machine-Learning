@@ -5,6 +5,8 @@ This directory contains the trained machine learning models:
 - `final_random_forest_model.pkl` - Trained Random Forest classifier (245 MB)
 - `label_encoder.pkl` - Label encoder for class mapping
 
+Download the Model: https://drive.google.com/drive/folders/1Yyc8jiJUFvVebtVE6Ojnpnob75s1dbiP?usp=sharing 
+
 ## Note
 
 Due to file size limitations, model files are not included in the Git repository. 

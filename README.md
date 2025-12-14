@@ -1,4 +1,9 @@
+
 # 🛡️ Malicious URL Detection Using Machine Learning
+
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://malicious-url-detection-hamim.streamlit.app/)
+
+**Live Demo:** [https://malicious-url-detection-hamim.streamlit.app/](https://malicious-url-detection-hamim.streamlit.app/)
 
 A modern, intelligent web application that uses Random Forest machine learning to detect and classify malicious URLs in real-time. Built with Streamlit, featuring an advanced whitelist override system and beautiful interactive visualizations.
 

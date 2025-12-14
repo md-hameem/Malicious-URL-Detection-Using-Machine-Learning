@@ -7,6 +7,8 @@ import re
 import plotly.graph_objects as go
 import plotly.express as px
 from datetime import datetime
+import os
+import gdown
 
 # Page configuration
 st.set_page_config(
@@ -245,6 +247,7 @@ st.markdown("""
 def load_models():
     """Load the trained model and label encoder"""
     try:
+        download_models_if_needed()
         with open("models/final_random_forest_model.pkl", "rb") as f:
             model = pickle.load(f)
         with open("models/label_encoder.pkl", "rb") as f:
@@ -493,6 +496,21 @@ def create_feature_radar(features_df):
         height=500
     )
     return fig
+
+def download_models_if_needed():
+    model_path = "models/final_random_forest_model.pkl"
+    encoder_path = "models/label_encoder.pkl"
+    # Google Drive file IDs: Copy the ID from the share link (between '/d/' and '/view?')
+    # Example share link: https://drive.google.com/file/d/1uOESMa1s_igNNQxERnZ3RXXPkpUVshEm/view?usp=sharing
+    # Use: model_gdrive_id = "1uOESMa1s_igNNQxERnZ3RXXPkpUVshEm"
+    model_gdrive_id = "1uOESMa1s_igNNQxERnZ3RXXPkpUVshEm"  # <-- Replace with your actual model file ID
+    encoder_gdrive_id = "1tRDV4SHs-ASKDmkJkZ9ZFOwjL33m_iH1"  # <-- Replace with your actual encoder file ID
+
+    if not os.path.exists(model_path):
+        os.makedirs("models", exist_ok=True)
+        gdown.download(f"https://drive.google.com/uc?id={model_gdrive_id}", model_path, quiet=False)
+    if not os.path.exists(encoder_path):
+        gdown.download(f"https://drive.google.com/uc?id={encoder_gdrive_id}", encoder_path, quiet=False)
 
 # Main app
 def main():

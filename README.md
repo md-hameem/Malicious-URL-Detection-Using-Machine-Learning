@@ -134,8 +134,7 @@ Malicious-URL-Detection-Using-Machine-Learning/
 │       └── malicious_phish.csv       # Training dataset (651K URLs)
 │
 ├── 📂 models/                        # Trained ML models
-│   ├── final_random_forest_model.pkl # Random Forest classifier
-│   └── label_encoder.pkl             # Label encoder
+│   # (Model files are not included in this version)
 │
 ├── 📂 notebooks/                     # Jupyter notebooks
 │   └── malicious_url_detection.ipynb # Analysis & training
@@ -159,7 +158,18 @@ Malicious-URL-Detection-Using-Machine-Learning/
     └── test_report_*.txt             # Text reports
 ```
 
+
 See [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) for detailed information.
+
+---
+
+## Download Pre-trained Models
+
+Due to file size limitations, model files are not included in the Git repository.
+
+You can download the pre-trained models from the following secure link:
+
+👉 [Download Pre-trained Models (Google Drive)](https://drive.google.com/drive/folders/1Yyc8jiJUFvVebtVE6Ojnpnob75s1dbiP?usp=sharing)
 
 ---
 
@@ -191,28 +201,11 @@ Test reports are automatically generated in `reports/` directory in three format
 ### Using the Model Programmatically
 
 ```python
-import pickle
-import pandas as pd
-
-# Load models
-with open("models/final_random_forest_model.pkl", "rb") as f:
-    model = pickle.load(f)
-with open("models/label_encoder.pkl", "rb") as f:
-    label_encoder = pickle.load(f)
-
-# Extract features (see app.py for full implementation)
+# Example: Feature extraction and prediction (model loading code removed)
+# See app.py for full implementation details
 url = "https://example.com"
 features_df = extract_url_features(url)  # Returns DataFrame with 27 features
-
-# Predict
-prediction = model.predict(features_df)[0]
-probabilities = model.predict_proba(features_df)[0]
-label = label_encoder.inverse_transform([prediction])[0]
-confidence = probabilities[prediction] * 100
-
-print(f"URL: {url}")
-print(f"Classification: {label}")
-print(f"Confidence: {confidence:.2f}%")
+# Model prediction code is not included in this version
 ```
 
 ---

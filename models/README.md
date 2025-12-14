@@ -1,27 +1,36 @@
 # Model Files
 
-This directory contains the trained machine learning models:
 
-- `final_random_forest_model.pkl` - Trained Random Forest classifier (245 MB)
-- `label_encoder.pkl` - Label encoder for class mapping
+## Overview
 
-Download the Model: https://drive.google.com/drive/folders/1Yyc8jiJUFvVebtVE6Ojnpnob75s1dbiP?usp=sharing 
+This directory is intended to store the trained machine learning models for the Malicious URL Detection project.
 
-## Note
+**Included model files (when available):**
+- `final_random_forest_model.pkl` — Trained Random Forest classifier (~245 MB)
+- `label_encoder.pkl` — Label encoder for class mapping
 
-Due to file size limitations, model files are not included in the Git repository. 
+---
 
-### To generate the models:
+## Download Pre-trained Models
 
-1. Run the complete notebook: `notebooks/malicious_url_detection.ipynb`
-2. The models will be automatically saved in this directory after training
+Due to file size limitations, model files are not included in the Git repository.
 
-### Download Pre-trained Models
+You can download the pre-trained models from the following secure link:
 
-Alternatively, you can download the pre-trained models from:
-- [Add your file hosting link here - e.g., Google Drive, Dropbox, or GitHub Releases]
+👉 [Download Pre-trained Models (Google Drive)](https://drive.google.com/drive/folders/1Yyc8jiJUFvVebtVE6Ojnpnob75s1dbiP?usp=sharing)
 
-## Model Performance
+---
+
+
+## How to Generate Models Locally
+
+If you prefer to train the models yourself:
+1. Run the notebook: `notebooks/malicious_url_detection.ipynb`
+2. The trained models will be saved automatically in this directory after training completes.
+
+---
+
+## Model Performance (Reference)
 
 **Random Forest Model:**
 - Accuracy: ~98%
